@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<!-- saved from url=(0124)file:///Users/nguyenductho/Code/SwiftDoc/Concurrency%20%E2%80%94%20The%20Swift%20Programming%20Language%20(Swift%205.5).html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="author" content="Apple Inc.">
+    <meta name="viewport" content="width=device-width initial-scale=1">
+    
+    <title>Concurrency — The Swift Programming Language (Swift 5.5)</title>
+    
+    <link rel="license" href="https://docs.swift.org/LICENSE.txt">
+    <link rel="stylesheet" media="all" href="./Concurrency — The Swift Programming Language (Swift 5.5)_files/application.css">
+    <link rel="stylesheet" media="all" href="./Concurrency — The Swift Programming Language (Swift 5.5)_files/tspl.css">
+    <link rel="shortcut icon" sizes="16x16 24x24 32x32 48x48 64x64" type="image/vnd.microsoft.icon" href="https://docs.swift.org/favicon.ico">
+    <link rel="apple-touch-icon" href="https://docs.swift.org/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="https://docs.swift.org/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://docs.swift.org/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="https://docs.swift.org/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://docs.swift.org/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://docs.swift.org/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://docs.swift.org/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://docs.swift.org/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://docs.swift.org/apple-touch-icon-180x180.png">
+    <link rel="mask-icon" href="https://docs.swift.org/assets/images/icon-swift.svg" color="#F05339"> 
+  <style type="text/css" id="cccd9a99-4cf2-4cbf-b630-8a3ac6d65141">.e8d82d65-2780-4445-a72b-80f421a5a027 { position: relative !important; border-radius: 0.2em !important; padding: 0px !important; margin: 0px !important; }
+
+.b1211e4f-5034-4d78-8824-843427fec6e2 .ssh-close { position: absolute; left: -8px; top: -8px; width: 16px; height: 16px; z-index: 999; border: none; background: url("data:image/png;base64,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") no-repeat border-box; animation-duration: 275ms; animation-timing-function: ease-out; box-shadow: none; animation-name: cc301b96-dce5-44a1-9bdf-068a0b735654; }
+
+.b1211e4f-5034-4d78-8824-843427fec6e2 .ssh-close:hover, .b1211e4f-5034-4d78-8824-843427fec6e2 .ssh-close:focus { background-image: url("data:image/png;base64,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"); }
+
+@media print {
+  .b1211e4f-5034-4d78-8824-843427fec6e2 { box-shadow: unset !important; -webkit-print-color-adjust: exact !important; }
+}
+
+@keyframes cc301b96-dce5-44a1-9bdf-068a0b735654 { 
+  0% { opacity: 0; transform: scale(0.6); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fb4c6bb6-0f2a-4a0b-9109-050c7bd414d1 { 
+  100% { opacity: 0; transform: scale(0.3); }
+}
+
+.b1211e4f-5034-4d78-8824-843427fec6e2 { background-color: rgba(238, 238, 238, 0.8); color: rgb(170, 170, 170); font: inherit; box-shadow: rgb(238, 238, 238) 0px 0px 0.35em; text-shadow: none !important; }
+
+.default-red-aa94e3d5-ab2f-4205-b74e-18ce31c7c0ce { box-shadow: rgb(255, 128, 128) 0px 0px 0.35em; background-color: rgba(255, 128, 128, 0.8) !important; color: rgb(0, 0, 0) !important; }
+
+.default-orange-da01945e-1964-4d27-8a6c-3331e1fe7f14 { box-shadow: rgb(255, 210, 170) 0px 0px 0.35em; background-color: rgba(255, 210, 170, 0.8) !important; color: rgb(0, 0, 0) !important; }
+
+.default-yellow-aaddcf5c-0e41-4f83-8a64-58c91f7c6250 { box-shadow: rgb(255, 255, 170) 0px 0px 0.35em; background-color: rgba(255, 255, 170, 0.8) !important; color: rgb(0, 0, 0) !important; }
+
+.default-green-c4d41e0a-e40f-4c3f-91ad-2d66481614c2 { box-shadow: rgb(170, 255, 170) 0px 0px 0.35em; background-color: rgba(170, 255, 170, 0.8) !important; color: rgb(0, 0, 0) !important; }
+
+.default-cyan-f88e8827-e652-4d79-a9d9-f6c8b8ec9e2b { box-shadow: rgb(170, 255, 255) 0px 0px 0.35em; background-color: rgba(170, 255, 255, 0.8) !important; color: rgb(0, 0, 0) !important; }
+
+.default-purple-c472dcdb-f2b8-41ab-bb1e-2fb293df172a { box-shadow: rgb(255, 170, 255) 0px 0px 0.35em; background-color: rgba(255, 170, 255, 0.8) !important; color: rgb(0, 0, 0) !important; }
+
+.default-grey-da7cb902-89c6-46fe-b0e7-d3b35aaf237a { box-shadow: rgb(119, 119, 119) 0px 0px 0.35em; background-color: rgba(119, 119, 119, 0.8) !important; color: rgb(255, 255, 255) !important; }</style></head>
+  <body class="clickup-chrome-ext_installed" data-new-gr-c-s-check-loaded="14.1039.0" data-gr-ext-installed="">
+
+
+<nav role="navigation">
+    <header role="banner">
+      <h1 id="logo">
+        <a href="https://swift.org/" title="Swift.org" role="img" aria-label="Swift.org">
+          Swift.org
+        </a>
+      </h1>
+    </header>
+
+    <div id="menu-toggle" class="menu-toggle open"></div>
+
+    <h2>The Swift Programming Language<div>Swift 5.5</div></h2>
+
+    <ul>
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="https://docs.swift.org/swift-book/">Welcome to Swift</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html">Language Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html">The Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/BasicOperators.html">Basic Operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/StringsAndCharacters.html">Strings and Characters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/CollectionTypes.html">Collection Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/ControlFlow.html">Control Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Functions.html">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Closures.html">Closures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Enumerations.html">Enumerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/ClassesAndStructures.html">Structures and Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Properties.html">Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Methods.html">Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Subscripts.html">Subscripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Inheritance.html">Inheritance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Initialization.html">Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Deinitialization.html">Deinitialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/OptionalChaining.html">Optional Chaining</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/ErrorHandling.html">Error Handling</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#">Concurrency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/TypeCasting.html">Type Casting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/NestedTypes.html">Nested Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Extensions.html">Extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Protocols.html">Protocols</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Generics.html">Generics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/OpaqueTypes.html">Opaque Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/AutomaticReferenceCounting.html">Automatic Reference Counting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/MemorySafety.html">Memory Safety</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/AccessControl.html">Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/AdvancedOperators.html">Advanced Operators</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.swift.org/swift-book/ReferenceManual/AboutTheLanguageReference.html">Language Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.swift.org/swift-book/RevisionHistory/RevisionHistory.html">Revision History</a></li>
+</ul>
+
+    <li class="toctree-l1 return"><a class="reference internal" href="https://swift.org/">← Return to Swift.org</a></li>
+    </ul>
+</nav>
+
+
+
+
+<main role="main">
+    <article class="page">
+        <menu id="bashful" type="toolbar">
+          <div class="inner">
+            <menuitem id="jump_to" class="menu-bar-item closed">
+            <span id="jump_to_toggle">On This Page</span>
+            <div class="chevron">
+                <div class="chevy chevron-left"></div>
+                <div class="chevy chevron-right"></div>
+            </div>
+            <menu type="list" class="details">
+                <ul>
+<li><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#">Concurrency</a><ul>
+<li><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#ID639">Defining and Calling Asynchronous Functions</a></li>
+<li><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#ID640">Asynchronous Sequences</a></li>
+<li><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#ID641">Calling Asynchronous Functions in Parallel</a></li>
+<li><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#ID642">Tasks and Task Groups</a><ul>
+<li><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#ID643">Unstructured Concurrency</a></li>
+<li><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#ID644">Task Cancellation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#ID645">Actors</a></li>
+</ul>
+</li>
+</ul>
+
+            </menu>
+            </menuitem>
+          </div>
+        </menu>
+
+        
+  <div class="section" id="concurrency">
+<h1>Concurrency<a class="headerlink" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#concurrency" title="Permalink to this headline">¶</a></h1>
+<p>Swift tích hợp khả năng lập trình asynchronous (bất đồng bộ), parallel (song song) một cách đơn giản và gọn ghẽ. <em>Lập trình bất đồng bộ (Asynchronous code)</em> có thể được suspend (tạm dừng) và resume (tiếp tục) sau đó cho dù chỉ có một đoạn chương trình được thực thi tại một thời điểm nào đó. Khả năng tạm dừng (Suspending) và tiếp tục (Resuming) cho phép chương trình của chúng ta có thể tạm dừng các tác vụ tốn nhiều thời gian như lấy dữ liệu qua mạng hoặc parse các tập tin để cập nhật giao diện (UI) và sau đó lại tiếp tục thực hiện các tác vụ này. <em>Lập trình song song (Parallel code)</em> nghĩa là nhiều đoạn chương trình sẽ được thực thi cùng lúc. Ví dụ một máy tính với bộ xử lý 4 nhân sẽ có thể chạy 4 đoạn chương trình khác nhau cùng lúc, mỗi nhân sẽ làm việc với một tác vụ. Một chương trình sử dụng code bất đồng bộ (asynchronous) và song song (parallel) có thể đảm nhiệm nhiều tác vụ cùng một lúc. Nó có thể tạm dừng các tác vụ đang phải chờ đợi hệ thống ngoài, đồng thời cũng dễ dàng trong việc đảm bảo an toàn bộ nhớ (memory-safety) khi viết code.  multiple pieces of code run simultaneously—for example, a computer with a four-core processor can run four pieces of code at the same time, with each core carrying out one of the tasks. A program that uses parallel and asynchronous code carries out multiple operations at a time; it suspends operations that are waiting for an external system, and makes it easier to write this code in a memory-safe way.</p>
+<p>The additional scheduling flexibility from parallel or asynchronous code also comes with a cost of increased complexity. Swift lets you express your intent in a way that enables some compile-time checking—for example, you can use actors to safely access mutable state. However, adding concurrency to slow or buggy code isn’t a guarantee that it will become fast or correct. In fact, adding concurrency might even make your code harder to debug. However, using Swift’s language-level support for concurrency in code that needs to be concurrent means Swift can help you catch problems at compile time.</p>
+<p>The rest of this chapter uses the term <em>concurrency</em> to refer to this common combination of asynchronous and parallel code.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you’ve written concurrent code before, you might be used to working with threads. The concurrency model in Swift is built on top of threads, but you don’t interact with them directly. An asynchronous function in Swift can give up the thread that it’s running on, which lets another asynchronous function run on that thread while the first function is blocked.</p>
+</div>
+<p>Although it’s possible to write concurrent code without using Swift’s language support, that code tends to be harder to read. For example, the following code downloads a list of photo names, downloads the first photo in that list, and shows that photo to the user:</p>
+<div class="highlight-swift notranslate"><div class="code-sample"><div class="Swift highlight"><ol class="code-lines"><li><span class="nv">listPhotos</span>(<span class="nv">inGallery</span>: <span class="s">"Summer Vacation"</span>) { <span class="nv">photoNames</span> <span class="k">in</span>
+</li><li>    <span class="k">let</span> <span class="nv">sortedNames</span> = <span class="nv">photoNames</span>.<span class="nv">sorted</span>()
+</li><li>    <span class="k">let</span> <span class="nv">name</span> = <span class="nv">sortedNames</span>[<span class="m">0</span>]
+</li><li>    <span class="nv">downloadPhoto</span>(<span class="nv">named</span>: <span class="nv">name</span>) { <span class="nv">photo</span> <span class="k">in</span>
+</li><li>        <span class="nv">show</span>(<span class="nv">photo</span>)
+</li><li>    }
+</li><li>}
+</li></ol></div></div></div>
+<p>Even in this simple case, because the code has to be written as a series of completion handlers, you end up writing nested closures. In this style, more complex code with deep nesting can quickly become unwieldy.</p>
+<div class="section" id="ID639">
+<h2>Defining and Calling Asynchronous Functions<a class="headerlink" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#ID639" title="Permalink to this headline">¶</a></h2>
+<p>An <em>asynchronous function</em> or <em>asynchronous method</em> is a special kind of function or method that can be suspended while it’s partway through execution. This is in contrast to ordinary, synchronous functions and methods, which either run to completion, throw an error, or never return. An asynchronous function or method still does one of those three things, but it can also pause in the middle when it’s waiting for something. Inside the body of an asynchronous function or method, you mark each of these places where execution can be suspended.</p>
+<p>To indicate that a function or method is asynchronous, you write the <code class="docutils literal notranslate"><span class="pre">async</span></code> keyword in its declaration after its parameters, similar to how you use <code class="docutils literal notranslate"><span class="pre">throws</span></code> to mark a throwing function. If the function or method returns a value, you write <code class="docutils literal notranslate"><span class="pre">async</span></code> before the return arrow (<code class="docutils literal notranslate"><span class="pre">-&gt;</span></code>). For example, here’s how you might fetch the names of photos in a gallery:</p>
+<div class="highlight-swift notranslate"><div class="code-sample"><div class="Swift highlight"><ol class="code-lines"><li><span class="k">func</span> <span class="nv">listPhotos</span>(<span class="nv">inGallery</span> <span class="nv">name</span>: <span class="nc">String</span>) <span class="nv">async</span> -&gt; [<span class="nv">String</span>] {
+</li><li>    <span class="k">let</span> <span class="nv">result</span> = <span class="c">// ... some asynchronous networking code ...</span>
+</li><li>    <span class="k">return</span> <span class="nv">result</span>
+</li><li>}
+</li></ol></div></div></div>
+<p>For a function or method that’s both asynchronous and throwing, you write <code class="docutils literal notranslate"><span class="pre">async</span></code> before <code class="docutils literal notranslate"><span class="pre">throws</span></code>.</p>
+<p>When calling an asynchronous method, execution suspends until that method returns. You write <code class="docutils literal notranslate"><span class="pre">await</span></code> in front of the call to mark the possible suspension point. This is like writing <code class="docutils literal notranslate"><span class="pre">try</span></code> when calling a throwing function, to mark the possible change to the program’s flow if there’s an error. Inside an asynchronous method, the flow of execution is suspended <em>only</em> when you call another asynchronous method—suspension is never implicit or preemptive—which means every possible suspension point is marked with <code class="docutils literal notranslate"><span class="pre">await</span></code>.</p>
+<p>For example, the code below fetches the names of all the pictures in a gallery and then shows the first picture:</p>
+<div class="highlight-swift notranslate"><div class="code-sample"><div class="Swift highlight"><ol class="code-lines"><li><span class="k">let</span> <span class="nv">photoNames</span> = <span class="nv">await</span> <span class="nv">listPhotos</span>(<span class="nv">inGallery</span>: <span class="s">"Summer Vacation"</span>)
+</li><li><span class="k">let</span> <span class="nv">sortedNames</span> = <span class="nv">photoNames</span>.<span class="nv">sorted</span>()
+</li><li><span class="k">let</span> <span class="nv">name</span> = <span class="nv">sortedNames</span>[<span class="m">0</span>]
+</li><li><span class="k">let</span> <span class="nv">photo</span> = <span class="nv">await</span> <span class="nv">downloadPhoto</span>(<span class="nv">named</span>: <span class="nv">name</span>)
+</li><li><span class="nv">show</span>(<span class="nv">photo</span>)
+</li></ol></div></div></div>
+<p>Because the <code class="docutils literal notranslate"><span class="pre">listPhotos(inGallery:)</span></code> and <code class="docutils literal notranslate"><span class="pre">downloadPhoto(named:)</span></code> functions both need to make network requests, they could take a relatively long time to complete. Making them both asynchronous by writing <code class="docutils literal notranslate"><span class="pre">async</span></code> before the return arrow lets the rest of the app’s code keep running while this code waits for the picture to be ready.</p>
+<p>To understand the concurrent nature of the example above, here’s one possible order of execution:</p>
+<ol class="arabic simple">
+<li>The code starts running from the first line and runs up to the first <code class="docutils literal notranslate"><span class="pre">await</span></code>. It calls the <code class="docutils literal notranslate"><span class="pre">listPhotos(inGallery:)</span></code> function and suspends execution while it waits for that function to return.</li>
+<li>While this code’s execution is suspended, some other concurrent code in the same program runs. For example, maybe a long-running background task continues updating a list of new photo galleries. That code also runs until the next suspension point, marked by <code class="docutils literal notranslate"><span class="pre">await</span></code>, or until it completes.</li>
+<li>After <code class="docutils literal notranslate"><span class="pre">listPhotos(inGallery:)</span></code> returns, this code continues execution starting at that point. It assigns the value that was returned to <code class="docutils literal notranslate"><span class="pre">photoNames</span></code>.</li>
+<li>The lines that define <code class="docutils literal notranslate"><span class="pre">sortedNames</span></code> and <code class="docutils literal notranslate"><span class="pre">name</span></code> are regular, synchronous code. Because nothing is marked <code class="docutils literal notranslate"><span class="pre">await</span></code> on these lines, there aren’t any possible suspension points.</li>
+<li>The next <code class="docutils literal notranslate"><span class="pre">await</span></code> marks the call to the <code class="docutils literal notranslate"><span class="pre">downloadPhoto(named:)</span></code> function. This code pauses execution again until that function returns, giving other concurrent code an opportunity to run.</li>
+<li>After <code class="docutils literal notranslate"><span class="pre">downloadPhoto(named:)</span></code> returns, its return value is assigned to <code class="docutils literal notranslate"><span class="pre">photo</span></code> and then passed as an argument when calling <code class="docutils literal notranslate"><span class="pre">show(_:)</span></code>.</li>
+</ol>
+<p>The possible suspension points in your code marked with <code class="docutils literal notranslate"><span class="pre">await</span></code> indicate that the current piece of code might pause execution while waiting for the asynchronous function or method to return. This is also called <em>yielding the thread</em> because, behind the scenes, Swift suspends the execution of your code on the current thread and runs some other code on that thread instead. Because code with <code class="docutils literal notranslate"><span class="pre">await</span></code> needs to be able to suspend execution, only certain places in your program can call asynchronous functions or methods:</p>
+<ul class="simple">
+<li>Code in the body of an asynchronous function, method, or property.</li>
+<li>Code in the static <code class="docutils literal notranslate"><span class="pre">main()</span></code> method of a structure, class, or enumeration that’s marked with <code class="docutils literal notranslate"><span class="pre">@main</span></code>.</li>
+<li>Code in a detached child task, as shown in <a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#ID643"><span class="std std-ref">Unstructured Concurrency</span></a> below.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The <a class="reference external" href="https://developer.apple.com/documentation/swift/task/3814836-sleep"><code class="docutils literal notranslate"><span class="pre">Task.sleep(_:)</span></code></a> method is useful when writing simple code to learn how concurrency works. This method does nothing, but waits at least the given number of nanoseconds before it returns. Here’s a version of the <code class="docutils literal notranslate"><span class="pre">listPhotos(inGallery:)</span></code> function that uses <code class="docutils literal notranslate"><span class="pre">sleep()</span></code> to simulate waiting for a network operation:</p>
+<div class="last highlight-swift notranslate"><div class="code-sample"><div class="Swift highlight"><ol class="code-lines"><li><span class="k">func</span> <span class="nv">listPhotos</span>(<span class="nv">inGallery</span> <span class="nv">name</span>: <span class="nc">String</span>) <span class="nv">async</span> -&gt; [<span class="nv">String</span>] {
+</li><li>    <span class="nv">await</span> <span class="nv">Task</span>.<span class="nv">sleep</span>(<span class="m">2</span> * <span class="m">1_000_000_000</span>)  <span class="c">// Two seconds</span>
+</li><li>    <span class="k">return</span> [<span class="s">"IMG001"</span>, <span class="s">"IMG99"</span>, <span class="s">"IMG0404"</span>]
+</li><li>}
+</li></ol></div></div></div>
+</div>
+</div>
+<div class="section" id="ID640">
+<h2>Asynchronous Sequences<a class="headerlink" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#ID640" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">listPhotos(inGallery:)</span></code> function in the previous section asynchronously returns the whole array at once, after all of the array’s elements are ready. Another approach is to wait for one element of the collection at a time using an <em>asynchronous sequence</em>. Here’s what iterating over an asynchronous sequence looks like:</p>
+<div class="highlight-swift notranslate"><div class="code-sample"><div class="Swift highlight"><ol class="code-lines"><li><span class="k">import</span> <span class="nv">Foundation</span>
+</li><li>
+</li><li><span class="k">let</span> <span class="nv">handle</span> = <span class="nv">FileHandle</span>.<span class="nv">standardInput</span>
+</li><li><span class="k">for</span> <span class="k">try</span> <span class="nv">await</span> <span class="nv">line</span> <span class="k">in</span> <span class="nv">handle</span>.<span class="nv">bytes</span>.<span class="nv">lines</span> {
+</li><li>    <span class="nv">print</span>(<span class="nv">line</span>)
+</li><li>}
+</li></ol></div></div></div>
+<p>Instead of using an ordinary <code class="docutils literal notranslate"><span class="pre">for</span></code>-<code class="docutils literal notranslate"><span class="pre">in</span></code> loop, the example above writes <code class="docutils literal notranslate"><span class="pre">for</span></code> with <code class="docutils literal notranslate"><span class="pre">await</span></code> after it. Like when you call an asynchronous function or method, writing <code class="docutils literal notranslate"><span class="pre">await</span></code> indicates a possible suspension point. A <code class="docutils literal notranslate"><span class="pre">for</span></code>-<code class="docutils literal notranslate"><span class="pre">await</span></code>-<code class="docutils literal notranslate"><span class="pre">in</span></code> loop potentially suspends execution at the beginning of each iteration, when it’s waiting for the next element to be available.</p>
+<p>In the same way that you can use your own types in a <code class="docutils literal notranslate"><span class="pre">for</span></code>-<code class="docutils literal notranslate"><span class="pre">in</span></code> loop by adding conformance to the <a class="reference external" href="https://developer.apple.com/documentation/swift/sequence"><code class="docutils literal notranslate"><span class="pre">Sequence</span></code></a> protocol, you can use your own types in a <code class="docutils literal notranslate"><span class="pre">for</span></code>-<code class="docutils literal notranslate"><span class="pre">await</span></code>-<code class="docutils literal notranslate"><span class="pre">in</span></code> loop by adding conformance to the <a class="reference external" href="https://developer.apple.com/documentation/swift/asyncsequence"><code class="docutils literal notranslate"><span class="pre">AsyncSequence</span></code></a> protocol.</p>
+</div>
+<div class="section" id="ID641">
+<h2>Calling Asynchronous Functions in Parallel<a class="headerlink" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#ID641" title="Permalink to this headline">¶</a></h2>
+<p>Calling an asynchronous function with <code class="docutils literal notranslate"><span class="pre">await</span></code> runs only one piece of code at a time. While the asynchronous code is running, the caller waits for that code to finish before moving on to run the next line of code. For example, to fetch the first three photos from a gallery, you could await three calls to the <code class="docutils literal notranslate"><span class="pre">downloadPhoto(named:)</span></code> function as follows:</p>
+<div class="highlight-swift notranslate"><div class="code-sample"><div class="Swift highlight"><ol class="code-lines"><li><span class="k">let</span> <span class="nv">firstPhoto</span> = <span class="nv">await</span> <span class="nv">downloadPhoto</span>(<span class="nv">named</span>: <span class="nv">photoNames</span>[<span class="m">0</span>])
+</li><li><span class="k">let</span> <span class="nv">secondPhoto</span> = <span class="nv">await</span> <span class="nv">downloadPhoto</span>(<span class="nv">named</span>: <span class="nv">photoNames</span>[<span class="m">1</span>])
+</li><li><span class="k">let</span> <span class="nv">thirdPhoto</span> = <span class="nv">await</span> <span class="nv">downloadPhoto</span>(<span class="nv">named</span>: <span class="nv">photoNames</span>[<span class="m">2</span>])
+</li><li>
+</li><li><span class="k">let</span> <span class="nv">photos</span> = [<span class="nv">firstPhoto</span>, <span class="nv">secondPhoto</span>, <span class="nv">thirdPhoto</span>]
+</li><li><span class="nv">show</span>(<span class="nv">photos</span>)
+</li></ol></div></div></div>
+<p>This approach has an important drawback: Although the download is asynchronous and lets other work happen while it progresses, only one call to <code class="docutils literal notranslate"><span class="pre">downloadPhoto(named:)</span></code> runs at a time. Each photo downloads completely before the next one starts downloading. However, there’s no need for these operations to wait—each photo can download independently, or even at the same time.</p>
+<p>To call an asynchronous function and let it run in parallel with code around it, write <code class="docutils literal notranslate"><span class="pre">async</span></code> in front of <code class="docutils literal notranslate"><span class="pre">let</span></code> when you define a constant, and then write <code class="docutils literal notranslate"><span class="pre">await</span></code> each time you use the constant.</p>
+<div class="highlight-swift notranslate"><div class="code-sample"><div class="Swift highlight"><ol class="code-lines"><li><span class="nv">async</span> <span class="k">let</span> <span class="nv">firstPhoto</span> = <span class="nv">downloadPhoto</span>(<span class="nv">named</span>: <span class="nv">photoNames</span>[<span class="m">0</span>])
+</li><li><span class="nv">async</span> <span class="k">let</span> <span class="nv">secondPhoto</span> = <span class="nv">downloadPhoto</span>(<span class="nv">named</span>: <span class="nv">photoNames</span>[<span class="m">1</span>])
+</li><li><span class="nv">async</span> <span class="k">let</span> <span class="nv">thirdPhoto</span> = <span class="nv">downloadPhoto</span>(<span class="nv">named</span>: <span class="nv">photoNames</span>[<span class="m">2</span>])
+</li><li>
+</li><li><span class="k">let</span> <span class="nv">photos</span> = <span class="nv">await</span> [<span class="nv">firstPhoto</span>, <span class="nv">secondPhoto</span>, <span class="nv">thirdPhoto</span>]
+</li><li><span class="nv">show</span>(<span class="nv">photos</span>)
+</li></ol></div></div></div>
+<p>In this example, all three calls to <code class="docutils literal notranslate"><span class="pre">downloadPhoto(named:)</span></code> start without waiting for the previous one to complete. If there are enough system resources available, they can run at the same time. None of these function calls are marked with <code class="docutils literal notranslate"><span class="pre">await</span></code> because the code doesn’t suspend to wait for the function’s result. Instead, execution continues until the line where <code class="docutils literal notranslate"><span class="pre">photos</span></code> is defined—at that point, the program needs the results from these asynchronous calls, so you write <code class="docutils literal notranslate"><span class="pre">await</span></code> to pause execution until all three photos finish downloading.</p>
+<p>Here’s how you can think about the differences between these two approaches:</p>
+<ul class="simple">
+<li>Call asynchronous functions with <code class="docutils literal notranslate"><span class="pre">await</span></code> when the code on the following lines depends on that function’s result. This creates work that is carried out sequentially.</li>
+<li>Call asynchronous functions with <code class="docutils literal notranslate"><span class="pre">async</span></code>-<code class="docutils literal notranslate"><span class="pre">let</span></code> when you don’t need the result until later in your code. This creates work that can be carried out in parallel.</li>
+<li>Both <code class="docutils literal notranslate"><span class="pre">await</span></code> and <code class="docutils literal notranslate"><span class="pre">async</span></code>-<code class="docutils literal notranslate"><span class="pre">let</span></code> allow other code to run while they’re suspended.</li>
+<li>In both cases, you mark the possible suspension point with <code class="docutils literal notranslate"><span class="pre">await</span></code> to indicate that execution will pause, if needed, until an asynchronous function has returned.</li>
+</ul>
+<p>You can also mix both of these approaches in the same code.</p>
+</div>
+<div class="section" id="ID642">
+<h2>Tasks and Task Groups<a class="headerlink" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#ID642" title="Permalink to this headline">¶</a></h2>
+<p>A <em>task</em> is a unit of work that can be run asynchronously as part of your program. All asynchronous code runs as part of some task. The <code class="docutils literal notranslate"><span class="pre">async</span></code>-<code class="docutils literal notranslate"><span class="pre">let</span></code> syntax described in the previous section creates a child task for you. You can also create a task group and add child tasks to that group, which gives you more control over priority and cancellation, and lets you create a dynamic number of tasks.</p>
+<p>Tasks are arranged in a hierarchy. Each task in a task group has the same parent task, and each task can have child tasks. Because of the explicit relationship between tasks and task groups, this approach is called <em>structured concurrency</em>. Although you take on some of the responsibility for correctness, the explicit parent-child relationships between tasks lets Swift handle some behaviors like propagating cancellation for you, and lets Swift detect some errors at compile time.</p>
+<div class="highlight-swift notranslate"><div class="code-sample"><div class="Swift highlight"><ol class="code-lines"><li><span class="nv">await</span> <span class="nv">withTaskGroup</span>(<span class="nv">of</span>: <span class="nv">Data</span>.<span class="k">self</span>) { <span class="nv">taskGroup</span> <span class="k">in</span>
+</li><li>    <span class="k">let</span> <span class="nv">photoNames</span> = <span class="nv">await</span> <span class="nv">listPhotos</span>(<span class="nv">inGallery</span>: <span class="s">"Summer Vacation"</span>)
+</li><li>    <span class="k">for</span> <span class="nv">name</span> <span class="k">in</span> <span class="nv">photoNames</span> {
+</li><li>        <span class="nv">taskGroup</span>.<span class="nv">addTask</span> { <span class="nv">await</span> <span class="nv">downloadPhoto</span>(<span class="nv">named</span>: <span class="nv">name</span>) }
+</li><li>    }
+</li><li>}
+</li></ol></div></div></div>
+<p>For more information about task groups, see <a class="reference external" href="https://developer.apple.com/documentation/swift/taskgroup"><code class="docutils literal notranslate"><span class="pre">TaskGroup</span></code></a>.</p>
+<div class="section" id="ID643">
+<h3>Unstructured Concurrency<a class="headerlink" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#ID643" title="Permalink to this headline">¶</a></h3>
+<p>In addition to the structured approaches to concurrency described in the previous sections, Swift also supports unstructured concurrency. Unlike tasks that are part of a task group, an <em>unstructured task</em> doesn’t have a parent task. You have complete flexibility to manage unstructured tasks in whatever way your program needs, but you’re also completely responsible for their correctness. To create an unstructured task that runs on the current actor, call the <a class="reference external" href="https://developer.apple.com/documentation/swift/task/3856790-init"><code class="docutils literal notranslate"><span class="pre">Task.init(priority:operation:)</span></code></a> initializer. To create an unstructured task that’s not part of the current actor, known more specifically as a <em>detached task</em>, call the <a class="reference external" href="https://developer.apple.com/documentation/swift/task/3856786-detached"><code class="docutils literal notranslate"><span class="pre">Task.detached(priority:operation:)</span></code></a> class method. Both of these operations return a task handle that lets you interact with the task—for example, to wait for its result or to cancel it.</p>
+<div class="highlight-swift notranslate"><div class="code-sample"><div class="Swift highlight"><ol class="code-lines"><li><span class="k">let</span> <span class="nv">newPhoto</span> = <span class="c">// ... some photo data ...</span>
+</li><li><span class="k">let</span> <span class="nv">handle</span> = <span class="nv">Task</span> {
+</li><li>    <span class="k">return</span> <span class="nv">await</span> <span class="nv">add</span>(<span class="nv">newPhoto</span>, <span class="nv">toGalleryNamed</span>: <span class="s">"Spring Adventures"</span>)
+</li><li>}
+</li><li><span class="k">let</span> <span class="nv">result</span> = <span class="nv">await</span> <span class="nv">handle</span>.<span class="nv">value</span>
+</li></ol></div></div></div>
+<p>For more information about managing detached tasks, see <a class="reference external" href="https://developer.apple.com/documentation/swift/task"><code class="docutils literal notranslate"><span class="pre">Task</span></code></a>.</p>
+</div>
+<div class="section" id="ID644">
+<h3>Task Cancellation<a class="headerlink" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#ID644" title="Permalink to this headline">¶</a></h3>
+<p>Swift concurrency uses a cooperative cancellation model. Each task checks whether it has been canceled at the appropriate points in its execution, and responds to cancellation in whatever way is appropriate. Depending on the work you’re doing, that usually means one of the following:</p>
+<ul class="simple">
+<li>Throwing an error like <code class="docutils literal notranslate"><span class="pre">CancellationError</span></code></li>
+<li>Returning <code class="docutils literal notranslate"><span class="pre">nil</span></code> or an empty collection</li>
+<li>Returning the partially completed work</li>
+</ul>
+<p>To check for cancellation, either call <a class="reference external" href="https://developer.apple.com/documentation/swift/task/3814826-checkcancellation"><code class="docutils literal notranslate"><span class="pre">Task.checkCancellation()</span></code></a>, which throws <code class="docutils literal notranslate"><span class="pre">CancellationError</span></code> if the task has been canceled, or check the value of <a class="reference external" href="https://developer.apple.com/documentation/swift/task/3814832-iscancelled"><code class="docutils literal notranslate"><span class="pre">Task.isCancelled</span></code></a> and handle the cancellation in your own code. For example, a task that’s downloading photos from a gallery might need to delete partial downloads and close network connections.</p>
+<p>To propagate cancellation manually, call <a class="reference external" href="https://developer.apple.com/documentation/swift/task/3851218-cancel"><code class="docutils literal notranslate"><span class="pre">Task.cancel()</span></code></a>.</p>
+</div>
+</div>
+<div class="section" id="ID645">
+<h2>Actors<a class="headerlink" href="https://docs.swift.org/swift-book/LanguageGuide/Concurrency.html#ID645" title="Permalink to this headline">¶</a></h2>
+<p>Like classes, actors are reference types, so the comparison of value types and reference types in <a class="reference internal" href="https://docs.swift.org/swift-book/LanguageGuide/ClassesAndStructures.html#ID89"><span class="std std-ref">Classes Are Reference Types</span></a> applies to actors as well as classes. Unlike classes, actors allow only one task to access their mutable state at a time, which makes it safe for code in multiple tasks to interact with the same instance of an actor. For example, here’s an actor that records temperatures:</p>
+<div class="highlight-swift notranslate"><div class="code-sample"><div class="Swift highlight"><ol class="code-lines"><li><span class="nv">actor</span> <span class="nv">TemperatureLogger</span> {
+</li><li>    <span class="k">let</span> <span class="nv">label</span>: <span class="nc">String</span>
+</li><li>    <span class="k">var</span> <span class="nv">measurements</span>: [<span class="nc">Int</span>]
+</li><li>    <span class="k">private(set)</span> <span class="k">var</span> <span class="nv">max</span>: <span class="nc">Int</span>
+</li><li>
+</li><li>    <span class="k">init</span>(<span class="nv">label</span>: <span class="nc">String</span>, <span class="nv">measurement</span>: <span class="nc">Int</span>) {
+</li><li>        <span class="k">self</span>.<span class="nv">label</span> = <span class="nv">label</span>
+</li><li>        <span class="k">self</span>.<span class="nv">measurements</span> = [<span class="nv">measurement</span>]
+</li><li>        <span class="k">self</span>.<span class="nv">max</span> = <span class="nv">measurement</span>
+</li><li>    }
+</li><li>}
+</li></ol></div></div></div>
+<p>You introduce an actor with the <code class="docutils literal notranslate"><span class="pre">actor</span></code> keyword, followed by its definition in a pair of braces. The <code class="docutils literal notranslate"><span class="pre">TemperatureLogger</span></code> actor has properties that other code outside the actor can access, and restricts the <code class="docutils literal notranslate"><span class="pre">max</span></code> property so only code inside the actor can update the maximum value.</p>
+<p>You create an instance of an actor using the same initializer syntax as structures and classes. When you access a property or method of an actor, you use <code class="docutils literal notranslate"><span class="pre">await</span></code> to mark the potential suspension point—for example:</p>
+<div class="highlight-swift notranslate"><div class="code-sample"><div class="Swift highlight"><ol class="code-lines"><li><span class="k">let</span> <span class="nv">logger</span> = <span class="nv">TemperatureLogger</span>(<span class="nv">label</span>: <span class="s">"Outdoors"</span>, <span class="nv">measurement</span>: <span class="m">25</span>)
+</li><li><span class="nv">print</span>(<span class="nv">await</span> <span class="nv">logger</span>.<span class="nv">max</span>)
+</li><li><span class="c">// Prints "25"</span>
+</li></ol></div></div></div>
+<p>In this example, accessing <code class="docutils literal notranslate"><span class="pre">logger.max</span></code> is a possible suspension point. Because the actor allows only one task at a time to access its mutable state, if code from another task is already interacting with the logger, this code suspends while it waits to access the property.</p>
+<p>In contrast, code that’s part of the actor doesn’t write <code class="docutils literal notranslate"><span class="pre">await</span></code> when accessing the actor’s properties. For example, here’s a method that updates a <code class="docutils literal notranslate"><span class="pre">TemperatureLogger</span></code> with a new temperature:</p>
+<div class="highlight-swift notranslate"><div class="code-sample"><div class="Swift highlight"><ol class="code-lines"><li><span class="k">extension</span> <span class="nc">TemperatureLogger</span> {
+</li><li>    <span class="k">func</span> <span class="nv">update</span>(<span class="nv">with</span> <span class="nv">measurement</span>: <span class="nc">Int</span>) {
+</li><li>        <span class="nv">measurements</span>.<span class="nv">append</span>(<span class="nv">measurement</span>)
+</li><li>        <span class="k">if</span> <span class="nv">measurement</span> &gt; <span class="nv">max</span> {
+</li><li>            <span class="nv">max</span> = <span class="nv">measurement</span>
+</li><li>        }
+</li><li>    }
+</li><li>}
+</li></ol></div></div></div>
+<p>The <code class="docutils literal notranslate"><span class="pre">update(with:)</span></code> method is already running on the actor, so it doesn’t mark its access to properties like <code class="docutils literal notranslate"><span class="pre">max</span></code> with <code class="docutils literal notranslate"><span class="pre">await</span></code>. This method also shows one of the reasons why actors allow only one task at a time to interact with their mutable state: Some updates to an actor’s state temporarily break invariants. The <code class="docutils literal notranslate"><span class="pre">TemperatureLogger</span></code> actor keeps track of a list of temperatures and a maximum temperature, and it updates the maximum temperature when you record a new measurement. In the middle of an update, after appending the new measurement but before updating <code class="docutils literal notranslate"><span class="pre">max</span></code>, the temperature logger is in a temporary inconsistent state. Preventing multiple tasks from interacting with the same instance simultaneously prevents problems like the following sequence of events:</p>
+<ol class="arabic simple">
+<li>Your code calls the <code class="docutils literal notranslate"><span class="pre">update(with:)</span></code> method. It updates the <code class="docutils literal notranslate"><span class="pre">measurements</span></code> array first.</li>
+<li>Before your code can update <code class="docutils literal notranslate"><span class="pre">max</span></code>, code elsewhere reads the maximum value and the array of temperatures.</li>
+<li>Your code finishes its update by changing <code class="docutils literal notranslate"><span class="pre">max</span></code>.</li>
+</ol>
+<p>In this case, the code running elsewhere would read incorrect information because its access to the actor was interleaved in the middle of the call to <code class="docutils literal notranslate"><span class="pre">update(with:)</span></code> while the data was temporarily invalid. You can prevent this problem when using Swift actors because they only allow one operation on their state at a time, and because that code can be interrupted only in places where <code class="docutils literal notranslate"><span class="pre">await</span></code> marks a suspension point. Because <code class="docutils literal notranslate"><span class="pre">update(with:)</span></code> doesn’t contain any suspension points, no other code can access the data in the middle of an update.</p>
+<p>If you try to access those properties from outside the actor, like you would with an instance of a class, you’ll get a compile-time error; for example:</p>
+<div class="highlight-swift notranslate"><div class="code-sample"><div class="Swift highlight"><ol class="code-lines"><li><span class="nv">print</span>(<span class="nv">logger</span>.<span class="nv">max</span>)  <span class="c">// Error</span>
+</li></ol></div></div></div>
+<p>Accessing <code class="docutils literal notranslate"><span class="pre">logger.max</span></code> without writing <code class="docutils literal notranslate"><span class="pre">await</span></code> fails because the properties of an actor are part of that actor’s isolated local state. Swift guarantees that only code inside an actor can access the actor’s local state. This guarantee is known as <em>actor isolation</em>.</p>
+</div>
+</div>
+
+
+    </article>
+    <div class="next_previous">
+        <p class="previous"><a href="https://docs.swift.org/swift-book/LanguageGuide/ErrorHandling.html">Error Handling</a></p>
+        <p class="next"><a href="https://docs.swift.org/swift-book/LanguageGuide/TypeCasting.html">Type Casting</a></p>
+    </div>
+</main>
+
+
+<footer role="contentinfo">
+  <aside>
+    <a href="https://swift.org/atom.xml" title="Subscribe to Site Updates"><i class="feed">Subscribe</i></a>
+    <a href="https://twitter.com/swiftlang" rel="nofollow" title="Follow @SwiftLang on Twitter"><i class="twitter">Twitter</i></a>
+  </aside>
+
+  <p class="copyright">Copyright © 2021 Apple Inc. All rights reserved.</p>
+  <p class="trademark">Swift and the Swift logo are trademarks of Apple Inc.</p>
+  <p class="privacy">
+    <a href="https://www.apple.com/privacy/privacy-policy/">Privacy Policy</a>
+    <a href="https://www.apple.com/legal/privacy/en-ww/cookies/">Cookies</a>
+  </p>
+</footer>
+<div id="jump_to_overlay"></div>
+<script src="./Concurrency — The Swift Programming Language (Swift 5.5)_files/application.js"></script>
+  
+<grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></body></html>
